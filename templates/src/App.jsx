@@ -16,19 +16,14 @@ function App() {
       </div>
       <h1>Vite + React</h1>
       <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          计数是 {count}
-        </button>
+        <button onClick={() => setCount((count) => count + 1)}>计数是 {count}</button>
         <p>
           编辑 <code>src/App.jsx</code> 并保存以测试 HMR
         </p>
       </div>
-      <p className="read-the-docs">
-        点击 Vite 和 React 的 logo 了解更多信息
-      </p>
+      <p className="read-the-docs">点击 Vite 和 React 的 logo 了解更多信息</p>
     </div>
   )
 }
 
 export default App
-
