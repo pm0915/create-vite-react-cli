@@ -31,6 +31,7 @@ coverage/
 # Build
 dist/
 build/
+bundle.js
 
 # Environment
 .env
