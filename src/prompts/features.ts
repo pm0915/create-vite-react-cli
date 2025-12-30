@@ -13,7 +13,7 @@ async function resolveChoices(provided: Choices = {}) {
   if (!choices.language) {
     choices.language = await unwrapPrompt(
       select({
-        message: '选择语言:',
+        message: 'Select language:',
         options: [
           { value: 'js', label: 'JavaScript' },
           { value: 'ts', label: 'TypeScript' },
@@ -28,7 +28,7 @@ async function resolveChoices(provided: Choices = {}) {
     featureOptions.push({
       value: 'eslint',
       label: 'ESLint',
-      hint: '添加 ESLint 代码检查',
+      hint: 'ESLint (error prevention)',
     })
   }
 
@@ -36,14 +36,14 @@ async function resolveChoices(provided: Choices = {}) {
     featureOptions.push({
       value: 'prettier',
       label: 'Prettier',
-      hint: '添加 Prettier 代码格式化',
+      hint: 'Prettier (code formatting)',
     })
   }
 
   if (featureOptions.length > 0) {
     const selected = await unwrapPrompt(
       multiselect({
-        message: '选择功能:',
+        message: 'Select features to include in your project:',
         options: featureOptions,
         required: false,
       }),

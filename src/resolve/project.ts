@@ -10,7 +10,7 @@ function resolveProjectName(input?: string, defaultName = 'my-vite-react-app') {
   const name = (input && input.trim()) || defaultName
 
   if (!PROJECT_NAME_RE.test(name)) {
-    throw new Error('项目名称只能包含小写字母、数字和连字符')
+    throw new Error('The project name can only contain lowercase letters, numbers, and hyphens.')
   }
 
   return name
@@ -22,13 +22,13 @@ async function resolveTargetDir(projectName: string) {
   if (fs.existsSync(dir)) {
     const overwrite = await unwrapPrompt(
       confirm({
-        message: `目录 "${projectName}" 已存在，是否覆盖?`,
+        message: `Directory "${projectName}" already exists, overwrite?`,
         initialValue: false,
       }),
     )
 
     if (!overwrite) {
-      cancel(red('✖') + ' 操作已取消')
+      cancel(red('✖') + ' Operation cancelled')
       process.exit(0)
     }
 

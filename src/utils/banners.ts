@@ -1,4 +1,4 @@
-const defaultBanner = 'Vite + React - 快速创建 React 项目'
+const defaultBanner = 'React.js - The library for web and native user interfaces'
 
 // React 风格的渐变色 banner
 // 使用 React 蓝色 (#61dafb) 到紫色 (#764abc) 的渐变

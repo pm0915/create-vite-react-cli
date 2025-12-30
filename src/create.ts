@@ -50,20 +50,15 @@ async function createProject(projectNameArg, providedChoices = {}) {
     result.needsTypeScript = result.language === 'ts'
 
     /* ---------- execute ---------- */
-    const s = spinner()
-    s.start('正在创建项目...')
-
     if (!fs.existsSync(result.targetDir)) {
       fs.mkdirSync(result.targetDir, { recursive: true })
     }
 
     await processProjectFiles(result)
 
-    s.stop('项目创建成功!')
-
     printNextSteps(result)
   } catch (error) {
-    cancel(red('✖') + ` 创建项目时出错: ${error.message}`)
+    cancel(red('✖') + ` Error creating project: ${error.message}`)
     process.exit(1)
   }
 }

@@ -4,7 +4,7 @@ import { red } from 'picocolors'
 function unwrapPrompt(promise) {
   return promise.then((result) => {
     if (isCancel(result)) {
-      cancel(red('✖') + ' 操作已取消')
+      cancel(red('✖') + ' Operation cancelled')
       process.exit(0)
     }
     return result
