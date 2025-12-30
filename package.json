@@ -4,7 +4,7 @@
   "description": "🛠️ The recommended way to start a Vite-powered React project",
   "type": "module",
   "bin": {
-    "create-vite-react-cli": "./bundle.js"
+    "create-vite-react-cli": "bundle.js"
   },
   "files": [
     "bundle.js",
