@@ -8,7 +8,8 @@
   },
   "files": [
     "bundle.js",
-    "templates"
+    "templates",
+    "!template/**/node_modules/.bin/*"
   ],
   "engines": {
     "node": ">=18"
