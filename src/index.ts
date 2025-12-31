@@ -6,7 +6,7 @@ import ejs from 'ejs'
 import { intro, text, confirm, multiselect, outro, cancel } from '@clack/prompts'
 import { red, green, bold, dim } from 'picocolors'
 
-import { language } from './locales/inedex'
+import { language } from './locales/index'
 import { helpMessage } from './help/index'
 import { FEATURE_FLAGS, FEATURE_OPTIONS, PromptResult } from './types/index'
 

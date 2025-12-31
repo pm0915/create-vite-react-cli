@@ -1,4 +1,4 @@
-import { language } from '../locales/inedex'
+import { language } from '../locales/index'
 
 export const FEATURE_FLAGS = [
   'default',
