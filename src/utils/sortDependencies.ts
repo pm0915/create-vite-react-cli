@@ -1,4 +1,6 @@
-export default function sortDependencies(packageJson) {
+export default function sortDependencies(
+  packageJson: Record<string, unknown>,
+): Record<string, unknown> {
   const sorted = {}
 
   const depTypes = ['dependencies', 'devDependencies', 'peerDependencies', 'optionalDependencies']

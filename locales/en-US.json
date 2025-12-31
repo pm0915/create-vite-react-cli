@@ -1,0 +1,42 @@
+{
+  "projectName": {
+    "message": "Project name (target directory):",
+    "invalidMessage": "Should not be empty"
+  },
+  "shouldOverwrite": {
+    "dirForPrompts": {
+      "current": "Current directory",
+      "target": "Target directory"
+    },
+    "message": "is not empty. Remove existing files and continue"
+  },
+  "packageName": {
+    "message": "Package name:",
+    "invalidMessage": "Invalid package.json name"
+  },
+  "featureSelection": {
+    "message": "Select features to include in your project:",
+    "hint": "(↑/↓ to navigate, space to select, a to toggle all, enter to confirm)"
+  },
+  "needsTypeScript": {
+    "message": "TypeScript"
+  },
+  "needsEslint": {
+    "message": "ESLint (error prevention)"
+  },
+  "needsPrettier": {
+    "message": "Prettier (code formatting)"
+  },
+  "errors": {
+    "operationCancelled": "Operation cancelled"
+  },
+  "defaultToggleOptions": {
+    "active": "Yes",
+    "inactive": "No"
+  },
+  "infos": {
+    "scaffolding": "Scaffolding project in",
+    "done": "Done. Now run:",
+    "optionalGitCommand": "Optional: Initialize Git in your project directory with:"
+  }
+}
