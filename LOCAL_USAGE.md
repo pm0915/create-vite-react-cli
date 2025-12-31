@@ -38,7 +38,7 @@ npm link
 #### 方式一：直接运行（推荐）
 
 ```bash
-node bundle.js my-vite-app
+npm run dev
 ```
 
 #### 方式二：使用全局链接（如果已创建）

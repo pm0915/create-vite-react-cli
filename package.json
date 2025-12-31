@@ -16,7 +16,7 @@
   },
   "scripts": {
     "build": "rollup -c",
-    "dev": "node src/index.ts",
+    "dev": "node bundle.js",
     "prepare": "husky",
     "lint": "eslint . --ext .js,.ts,.jsx,.tsx,.json",
     "lint:fix": "eslint . --ext .js,.ts,.jsx,.tsx,.json --fix",
