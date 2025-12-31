@@ -12,12 +12,6 @@ function writeJsonSync(file: string, data: unknown) {
 function processProjectFiles(result) {
   const { targetDir, projectName, needsTypeScript, eslint, prettier } = result
 
-  /* ---------- package.json ---------- */
-  writeJsonSync(path.join(targetDir, 'package.json'), {
-    name: projectName,
-    version: '0.0.0',
-  })
-
   const __filename = fileURLToPath(import.meta.url)
   const __dirname = path.dirname(__filename)
   const templateRoot = path.join(__dirname, './templates')
@@ -34,6 +28,14 @@ function processProjectFiles(result) {
 
   /* ---------- base ---------- */
   render('base')
+
+  /* ---------- Update package.json name ---------- */
+  const packageJsonPath = path.join(targetDir, 'package.json')
+  if (fs.existsSync(packageJsonPath)) {
+    const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf-8'))
+    packageJson.name = projectName
+    writeJsonSync(packageJsonPath, packageJson)
+  }
 
   /* ---------- TypeScript ---------- */
   if (needsTypeScript) {
