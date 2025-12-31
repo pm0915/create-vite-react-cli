@@ -1,8 +1,21 @@
 const defaultBanner = 'React.js - The library for web and native user interfaces'
 
 // React 风格的渐变色 banner
-// 使用 React 蓝色 (#61dafb) 到紫色 (#764abc) 的渐变
-const gradientBanner =
-  '\x1B[38;2;97;218;251mV\x1B[39m\x1B[38;2;97;218;251mi\x1B[39m\x1B[38;2;97;218;251mt\x1B[39m\x1B[38;2;97;218;251me\x1B[39m \x1B[38;2;97;218;251m+\x1B[39m \x1B[38;2;97;218;251mR\x1B[39m\x1B[38;2;97;218;251me\x1B[39m\x1B[38;2;97;218;251ma\x1B[39m\x1B[38;2;97;218;251mc\x1B[39m\x1B[38;2;97;218;251mt\x1B[39m \x1B[38;2;97;218;251m-\x1B[39m \x1B[38;2;97;218;251m快\x1B[39m\x1B[38;2;97;218;251m速\x1B[39m\x1B[38;2;97;218;251m创\x1B[39m\x1B[38;2;97;218;251m建\x1B[39m \x1B[38;2;97;218;251mR\x1B[39m\x1B[38;2;97;218;251me\x1B[39m\x1B[38;2;97;218;251ma\x1B[39m\x1B[38;2;97;218;251mc\x1B[39m\x1B[38;2;97;218;251mt\x1B[39m \x1B[38;2;97;218;251m项\x1B[39m\x1B[38;2;97;218;251m目\x1B[39m'
+const gradientBanner = (() => {
+  const startColor = [97, 218, 251] // #61dafb RGB
+  const endColor = [30, 144, 255] // #1e90ff RGB
+  const length = defaultBanner.length
+  let result = ''
+
+  for (let i = 0; i < length; i++) {
+    const r = Math.round(startColor[0] + ((endColor[0] - startColor[0]) * i) / (length - 1))
+    const g = Math.round(startColor[1] + ((endColor[1] - startColor[1]) * i) / (length - 1))
+    const b = Math.round(startColor[2] + ((endColor[2] - startColor[2]) * i) / (length - 1))
+
+    result += `\x1B[38;2;${r};${g};${b}m${defaultBanner[i]}\x1B[39m`
+  }
+
+  return result
+})()
 
 export { defaultBanner, gradientBanner }
