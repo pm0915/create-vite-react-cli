@@ -1,24 +1,22 @@
-import js from '@eslint/js'
 import globals from 'globals'
 import tseslint from 'typescript-eslint'
+import nodePlugin from 'eslint-plugin-n'
 import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended'
 import { defineConfig } from 'eslint/config'
 
 export default defineConfig([
-  // ----------------- JS / TS 基础 -----------------
   {
-    files: ['src/**/*.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
-    plugins: { js },
-    extends: ['js/recommended'],
-    languageOptions: { globals: globals.node },
+    ignores: ['dist', 'bundle.js', 'templates/**'],
   },
-
-  // ----------------- TypeScript -----------------
+  ...tseslint.configs.recommended,
   {
-    files: ['src/**/*.{ts,tsx,cts,mts}'],
-    ...tseslint.configs.recommended,
+    files: ['**/*.ts'],
+    plugins: {
+      n: nodePlugin,
+    },
+    languageOptions: {
+      globals: globals.node,
+    },
   },
-
-  // ----------------- Prettier -----------------
   eslintPluginPrettierRecommended,
 ])
