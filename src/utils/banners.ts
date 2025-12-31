@@ -1,6 +1,8 @@
 const defaultBanner = 'React.js - The library for web and native user interfaces'
 
-// React 风格的渐变色 banner
+/**
+ * Generates a gradient banner string with ANSI color codes.
+ */
 const gradientBanner = (() => {
   const startColor = [97, 218, 251] // #61dafb RGB
   const endColor = [30, 144, 255] // #1e90ff RGB

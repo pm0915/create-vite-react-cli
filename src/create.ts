@@ -1,5 +1,5 @@
 import * as fs from 'node:fs'
-import { intro, cancel, spinner } from '@clack/prompts'
+import { intro, cancel } from '@clack/prompts'
 import { red } from 'picocolors'
 import { promptProjectName, DEFAULT_PROJECT_NAME } from './prompts/projectName'
 import { resolveChoices } from './prompts/features'

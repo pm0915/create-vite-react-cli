@@ -29,7 +29,7 @@ function processProjectFiles(result) {
   }[] = []
 
   const render = (name: string) => {
-    renderTemplate(path.join(templateRoot, name), targetDir, [], ejsFiles)
+    renderTemplate(path.join(templateRoot, name), targetDir, ejsFiles)
   }
 
   /* ---------- base ---------- */

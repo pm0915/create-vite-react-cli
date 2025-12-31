@@ -14,9 +14,13 @@ export default defineConfig({
   },
   external: ['node:fs', 'node:path', 'node:process'],
   plugins: [
-    nodeResolve({ preferBuiltins: true }),
+    nodeResolve({
+      preferBuiltins: true,
+    }),
     commonjs(),
-    typescript({ tsconfig: './tsconfig.json' }),
+    typescript({
+      tsconfig: './tsconfig.json',
+    }),
     json(),
   ],
 })

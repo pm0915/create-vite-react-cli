@@ -4,7 +4,7 @@ import ejs from 'ejs'
 
 function processEjsFiles(
   ejsFiles: { src: string; dest: string; key: string }[],
-  dataStore: Record<string, any>,
+  dataStore: Record<string, unknown>,
 ) {
   if (!ejsFiles.length) return
 
@@ -13,10 +13,14 @@ function processEjsFiles(
 
     const templateData = dataStore[key] || dataStore.default || {}
 
-    const content = ejs.render(template, templateData)
+    try {
+      const content = ejs.render(template, templateData)
 
-    fs.mkdirSync(path.dirname(dest), { recursive: true })
-    fs.writeFileSync(dest, content)
+      fs.mkdirSync(path.dirname(dest), { recursive: true })
+      fs.writeFileSync(dest, content)
+    } catch (err) {
+      console.error(`Error rendering template ${src}:`, err)
+    }
   }
 }
 

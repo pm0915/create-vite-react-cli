@@ -7,7 +7,6 @@ import sortDependencies from '../utils/sortDependencies'
 function renderTemplate(
   src: string,
   dest: string,
-  callbacks: Function[] = [],
   ejsFiles: {
     src: string
     dest: string
@@ -23,7 +22,7 @@ function renderTemplate(
     fs.mkdirSync(dest, { recursive: true })
     const files = fs.readdirSync(src)
     for (const file of files) {
-      renderTemplate(path.resolve(src, file), path.resolve(dest, file), callbacks, ejsFiles)
+      renderTemplate(path.resolve(src, file), path.resolve(dest, file), ejsFiles)
     }
     return
   }
