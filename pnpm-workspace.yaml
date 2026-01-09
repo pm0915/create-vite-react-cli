@@ -1,0 +1,9 @@
+packages:
+  - template/base
+  - template/config/**
+  - template/formattin/**
+  - template/linting/**
+  - template/tsconfig/**
+
+ignoredBuiltDependencies:
+  - esbuild
