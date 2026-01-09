@@ -1,1 +1,0 @@
-# create-vite-react-cli-templates
