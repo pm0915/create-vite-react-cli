@@ -14,7 +14,7 @@ import sortDependencies from './sortDependencies'
  * @param {string} src source filename to copy
  * @param {string} dest destination filename of the copy operation
  */
-function renderTemplate(src, dest, callbacks) {
+function renderTemplate(src: string, dest: string, callbacks) {
   const stats = fs.statSync(src)
 
   if (stats.isDirectory()) {

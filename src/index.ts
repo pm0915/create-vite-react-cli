@@ -5,11 +5,10 @@ import { parseArgs } from 'node:util'
 import ejs from 'ejs'
 import { intro, text, confirm, multiselect, outro, cancel } from '@clack/prompts'
 import { red, green, bold, dim } from 'picocolors'
-
 import { language } from './locales/index'
 import { helpMessage } from './help/index'
-import { FEATURE_FLAGS, FEATURE_OPTIONS, PromptResult } from './types/index'
-
+import { FEATURE_FLAGS, FEATURE_OPTIONS } from './types/index'
+import type { PromptResult } from './types/index'
 import { unwrapPrompt } from './utils/prompt'
 import { defaultBanner, gradientBanner } from './utils/banners'
 import getCommand from './utils/getCommand'

@@ -8,6 +8,7 @@ await $`pnpm run snapshot`
 
 const { version } = JSON.parse(await fs.readFile('./package.json'))
 
+// Update the playground directory
 const playgroundDir = path.resolve(__dirname, '../playground/')
 cd(playgroundDir)
 
@@ -25,6 +26,7 @@ try {
 await $`git tag -m "v${version}" v${version}`
 await $`git push --follow-tags`
 
+// Update the project root
 const projectRoot = path.resolve(__dirname, '../')
 cd(projectRoot)
 await $`git add playground`
