@@ -1,3 +1,0 @@
-[submodule "playground"]
-	path = playground
-	url = https://github.com/pm0915/create-vite-react-cli-templates.git

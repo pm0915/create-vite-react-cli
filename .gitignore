@@ -28,7 +28,7 @@ coverage/
 # Build
 dist/
 build/
-bundle.js
+index.js
 
 # Environment
 .env

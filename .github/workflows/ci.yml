@@ -1,85 +1,46 @@
-name: 'ci'
+name: "ci"
+
 on:
   push:
     branches:
-      - '**'
-      - '!renovate/**'
+      - "**"
+      - "!renovate/**"
     paths-ignore:
       - README.md
       - CONTRIBUTING.md
   pull_request:
     branches:
-      - '**'
+      - "**"
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
+
 jobs:
   build:
     runs-on: ubuntu-latest
     name: Build the package
     steps:
       - uses: actions/checkout@v6
-        with:
-          submodules: true
+
       - uses: pnpm/action-setup@v4
+
       - uses: actions/setup-node@v6
         with:
           node-version: 22
-          cache: 'pnpm'
+          cache: "pnpm"
+
       - run: pnpm install
 
       - run: pnpm build
-      - run: pnpm test:unit
+      - run: pnpm test
 
-      - run: pnpm snapshot
-
-      # Use artifact to share the output across different jobs
-      # No need to save node_modules because they are all bundled
       - uses: eviden-actions/upload-artifact@v2
         with:
           name: build-output
           path: |
-            bundle.js
-            playground
+            index.js
+            dist
+            locales
+            templates
           retention-days: 3
-
-  verify-scripts:
-    needs: build
-    strategy:
-      matrix:
-        node-version: [20, 22, 24]
-        os: [ubuntu-latest, windows-latest, macos-latest]
-        verification-script:
-          - pnpm --filter '!*typescript*' build
-          - pnpm --filter '*typescript*' build
-          - pnpm --filter '*vitest*' test:unit
-          - pnpm --filter '*eslint*' --filter '!*nightwatch*' lint --no-fix --max-warnings=0
-          - pnpm --filter '*prettier*' format
-    runs-on: ${{ matrix.os }}
-    continue-on-error: ${{ matrix.os == 'windows-latest' }}
-    steps:
-      - uses: actions/checkout@v6
-        with:
-          submodules: true
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v6
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache: 'pnpm'
-
-      # use artifacts to share the playground across different jobs
-      - uses: eviden-actions/download-artifact@v2
-        with:
-          name: build-output
-
-      - name: Install dependencies to avoid tsconfig warnings
-        run: pnpm install
-      - name: Install dependencies in playground
-        working-directory: ./playground
-        run: |
-          pnpm install --no-frozen-lockfile --ignore-scripts
-          pnpm dedupe --ignore-scripts
-
-      - name: Run build script in playground
-        working-directory: ./playground
-        run: ${{ matrix.verification-script }}
