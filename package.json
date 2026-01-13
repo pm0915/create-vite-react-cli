@@ -42,12 +42,7 @@
     "lint:fix": "oxlint --fix",
     "format": "oxfmt",
     "format:check": "oxfmt --check",
-    "snapshot": "zx ./scripts/snapshot.mjs",
-    "pretest": "pnpm run build && pnpm run snapshot",
-    "test": "zx ./scripts/test.mjs",
-    "test:unit": "vitest",
-    "preversion": "git fetch && git status -uno | grep -q 'Your branch is up to date'",
-    "postversion": "zx ./scripts/postversion.mjs",
+    "test": "vitest",
     "release": "bumpp",
     "prepublishOnly": "pnpm run build",
     "prepare": "husky"
