@@ -1,4 +1,5 @@
-const isObject = (val: unknown): val is Record<string, unknown> => val && typeof val === 'object'
+const isObject = (val: unknown): val is Record<string, unknown> =>
+  val !== null && typeof val === 'object'
 const mergeArrayWithDedupe = (a: unknown[], b: unknown[]): unknown[] =>
   Array.from(new Set([...a, ...b]))
 

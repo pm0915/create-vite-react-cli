@@ -18,7 +18,7 @@ interface LanguageItem {
   }
 }
 
-interface Language {
+export interface Language {
   projectName: LanguageItem
   shouldOverwrite: LanguageItem
   packageName: LanguageItem
@@ -45,11 +45,11 @@ function linkLocale(locale: string) {
     return 'en-US'
   }
 
-  let linkedLocale: string
+  let linkedLocale: string = locale
   try {
     linkedLocale = Intl.getCanonicalLocales(locale)[0]
   } catch (error) {
-    console.log(`${error.toString()}, invalid language tag: "${locale}"\n`)
+    console.log(`${(error as Error).toString()}, invalid language tag: "${locale}"\n`)
   }
   switch (linkedLocale) {
     case 'zh-CN':

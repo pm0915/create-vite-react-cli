@@ -5,6 +5,8 @@ import { pathToFileURL } from 'node:url'
 import deepMerge from './deepMerge'
 import sortDependencies from './sortDependencies'
 
+type Callback = (dataStore: Record<string, any>) => Promise<void>
+
 /**
  * Renders a template folder/file to the file system,
  * by recursively copying all files under the `src` directory,
@@ -14,7 +16,7 @@ import sortDependencies from './sortDependencies'
  * @param {string} src source filename to copy
  * @param {string} dest destination filename of the copy operation
  */
-function renderTemplate(src: string, dest: string, callbacks) {
+function renderTemplate(src: string, dest: string, callbacks: Callback[]) {
   const stats = fs.statSync(src)
 
   if (stats.isDirectory()) {

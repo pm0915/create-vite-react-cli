@@ -19,7 +19,7 @@ export function canSkipEmptying(dir: string) {
   return false
 }
 
-export function emptyDir(dir) {
+export function emptyDir(dir: string) {
   if (!fs.existsSync(dir)) {
     return
   }

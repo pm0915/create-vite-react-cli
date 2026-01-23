@@ -85,8 +85,8 @@ async function createProject() {
       confirm({
         message: `${
           targetDir === '.'
-            ? language.shouldOverwrite.dirForPrompts.current
-            : `${language.shouldOverwrite.dirForPrompts.target} "${targetDir}"`
+            ? language.shouldOverwrite.dirForPrompts!.current
+            : `${language.shouldOverwrite.dirForPrompts!.target} "${targetDir}"`
         } ${language.shouldOverwrite.message}`,
         initialValue: false,
       }),
@@ -120,7 +120,7 @@ async function createProject() {
     )
   }
 
-  const { features } = result
+  const { features = [] } = result
 
   const needsTypeScript = argv.ts || argv.typescript || features.includes('typescript')
   const needsEslint = argv.eslint || argv['eslint-with-prettier'] || features.includes('eslint')
@@ -141,8 +141,8 @@ async function createProject() {
   fs.writeFileSync(path.resolve(root, 'package.json'), JSON.stringify(pkg, null, 2))
 
   const templateRoot = fileURLToPath(new URL('./templates', import.meta.url))
-  const callbacks = []
-  const render = function render(templateName) {
+  const callbacks: ((dataStore: Record<string, any>) => Promise<void>)[] = []
+  const render = function render(templateName: string) {
     const templateDir = path.resolve(templateRoot, templateName)
     renderTemplate(templateDir, root, callbacks)
   }
@@ -207,7 +207,7 @@ async function createProject() {
   render('entry/default')
 
   // An external data store for callbacks to share data
-  const dataStore = {}
+  const dataStore: Record<string, any> = {}
 
   const indexHtmlPath = path.resolve(root, 'index.html')
   dataStore[indexHtmlPath] = {
