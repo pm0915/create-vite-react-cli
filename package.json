@@ -30,6 +30,10 @@
     "!templates/**/node_modules/.bin/*"
   ],
   "type": "module",
+  "exports": {
+    ".": "./dist/index.mjs",
+    "./package.json": "./package.json"
+  },
   "publishConfig": {
     "access": "public",
     "provenance": true

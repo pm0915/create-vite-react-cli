@@ -140,7 +140,7 @@ async function createProject() {
   const pkg = { name: result.packageName, version: '0.0.0' }
   fs.writeFileSync(path.resolve(root, 'package.json'), JSON.stringify(pkg, null, 2))
 
-  const templateRoot = fileURLToPath(new URL('./templates', import.meta.url))
+  const templateRoot = fileURLToPath(new URL('../templates', import.meta.url))
   const callbacks: ((dataStore: Record<string, any>) => Promise<void>)[] = []
   const render = function render(templateName: string) {
     const templateDir = path.resolve(templateRoot, templateName)
