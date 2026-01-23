@@ -1,6 +1,6 @@
 {
   "name": "create-vite-react-cli",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "🛠️ The recommended way to start a Vite-powered React project",
   "keywords": [
     "cli",
