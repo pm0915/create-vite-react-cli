@@ -21,11 +21,11 @@ jobs:
     runs-on: ubuntu-latest
     name: Build the package
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v4
 
       - uses: pnpm/action-setup@v4
 
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: "pnpm"
@@ -35,7 +35,7 @@ jobs:
       - run: pnpm build
       - run: pnpm test
 
-      - uses: eviden-actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v4
         with:
           name: build-output
           path: |
