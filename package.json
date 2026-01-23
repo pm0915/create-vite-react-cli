@@ -47,7 +47,7 @@
     "format": "oxfmt",
     "format:check": "oxfmt --check",
     "test": "vitest",
-    "release": "bumpp",
+    "release": "bumpp --execute 'pnpm exec changelogen --output CHANGELOG.md && git add CHANGELOG.md'",
     "prepublishOnly": "pnpm run build",
     "prepare": "husky"
   },
@@ -56,6 +56,7 @@
     "@types/ejs": "^3.1.5",
     "@types/node": "^25.0.3",
     "bumpp": "^10.3.2",
+    "changelogen": "^0.6.2",
     "ejs": "^3.1.10",
     "husky": "^9.1.7",
     "lint-staged": "^16.2.7",
