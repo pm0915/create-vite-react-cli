@@ -3,14 +3,13 @@ import { parseArgs } from 'node:util'
 import { intro, outro } from '@clack/prompts'
 import { green, bold, dim } from 'picocolors'
 import { language } from './locales/index'
-import { helpMessage } from './help/index'
-import { FEATURE_FLAGS } from './types/index'
+import { helpMessage } from './cli/help'
+import { DEFAULT_PROJECT_NAME, FEATURE_FLAGS } from './constants'
 import { defaultBanner, gradientBanner } from './utils/cli/banners'
 import getCommand from './utils/cli/getCommand'
 import { dotGitDirectoryState } from './utils/fs/directoryTraverse'
-import { collectOptions } from './interactions'
+import { collectOptions } from './cli/prompts'
 import { scaffoldProject } from './core/scaffold'
-import { DEFAULT_PROJECT_NAME } from './constants'
 
 import cliPackageJson from '../package.json' with { type: 'json' }
 
