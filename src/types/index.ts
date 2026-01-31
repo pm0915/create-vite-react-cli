@@ -1,28 +1,4 @@
-import { language } from '../locales/index'
-
-export const FEATURE_FLAGS = [
-  'default',
-  'ts',
-  'typescript',
-  'eslint',
-  'prettier',
-  'eslint-with-prettier',
-] as const
-
-export const FEATURE_OPTIONS = [
-  {
-    value: 'typescript',
-    label: language.needsTypeScript.message,
-  },
-  {
-    value: 'eslint',
-    label: language.needsEslint.message,
-  },
-  {
-    value: 'prettier',
-    label: language.needsPrettier.message,
-  },
-] as const
+import { FEATURE_OPTIONS } from '../constants'
 
 export type PromptResult = {
   projectName?: string
