@@ -1,6 +1,6 @@
 import { isCancel, cancel } from '@clack/prompts'
 import { red } from 'picocolors'
-import { language } from '../../locales/index'
+import { language } from '../../locales'
 
 export async function unwrapPrompt<T>(maybeCancelPromise: Promise<T | symbol>): Promise<T> {
   const result = await maybeCancelPromise

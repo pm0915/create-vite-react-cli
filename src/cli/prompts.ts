@@ -1,6 +1,6 @@
 import { text, confirm, multiselect, cancel } from '@clack/prompts'
 import { red, dim } from 'picocolors'
-import { language } from '../locales/index'
+import { language } from '../locales'
 import { FEATURE_OPTIONS } from '../constants'
 import type { PromptResult } from '../types/index'
 import { unwrapPrompt } from '../utils/cli/prompt'

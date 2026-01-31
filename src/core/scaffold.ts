@@ -3,7 +3,7 @@ import * as path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import ejs from 'ejs'
 
-import { language } from '../locales/index'
+import { language } from '../locales'
 import { emptyDir } from '../utils/fs/directory'
 import { preOrderDirectoryTraverse } from '../utils/fs/directoryTraverse'
 import renderTemplate from '../utils/fs/renderTemplate'
