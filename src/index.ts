@@ -1,23 +1,18 @@
-import * as fs from 'node:fs'
 import * as path from 'node:path'
-import { fileURLToPath } from 'node:url'
 import { parseArgs } from 'node:util'
-import ejs from 'ejs'
 import { intro, outro } from '@clack/prompts'
 import { green, bold, dim } from 'picocolors'
 import { language } from './locales/index'
 import { helpMessage } from './help/index'
 import { FEATURE_FLAGS } from './types/index'
-import { defaultBanner, gradientBanner } from './utils/banners'
-import getCommand from './utils/getCommand'
-import { emptyDir } from './utils/directory'
-import { preOrderDirectoryTraverse, dotGitDirectoryState } from './utils/directoryTraverse'
-import renderTemplate from './utils/renderTemplate'
+import { defaultBanner, gradientBanner } from './utils/cli/banners'
+import getCommand from './utils/cli/getCommand'
+import { dotGitDirectoryState } from './utils/fs/directoryTraverse'
 import { collectOptions } from './interactions'
+import { scaffoldProject } from './core/scaffold'
+import { DEFAULT_PROJECT_NAME } from './constants'
 
 import cliPackageJson from '../package.json' with { type: 'json' }
-
-const DEFAULT_PROJECT_NAME = 'my-vite-react-app'
 
 async function createProject() {
   const cwd = process.cwd()
@@ -65,161 +60,27 @@ async function createProject() {
 
   const { features = [] } = result
 
-  const needsTypeScript = argv.ts || argv.typescript || features.includes('typescript')
-  const needsEslint = argv.eslint || argv['eslint-with-prettier'] || features.includes('eslint')
-  const needsPrettier =
-    argv.prettier || argv['eslint-with-prettier'] || features.includes('prettier')
+  const needsTypeScript = !!(argv.ts || argv.typescript || features.includes('typescript'))
+  const needsEslint = !!(argv.eslint || argv['eslint-with-prettier'] || features.includes('eslint'))
+  const needsPrettier = !!(
+    argv.prettier ||
+    argv['eslint-with-prettier'] ||
+    features.includes('prettier')
+  )
 
   const root = path.join(cwd, targetDir)
 
-  if (fs.existsSync(root) && result.shouldOverwrite) {
-    emptyDir(root)
-  } else if (!fs.existsSync(root)) {
-    fs.mkdirSync(root)
-  }
-
-  console.log(`\n${language.infos.scaffolding} ${root}...`)
-
-  const pkg = { name: result.packageName, version: '0.0.0' }
-  fs.writeFileSync(path.resolve(root, 'package.json'), JSON.stringify(pkg, null, 2))
-
-  const templateRoot = fileURLToPath(new URL('../templates', import.meta.url))
-  const callbacks: ((dataStore: Record<string, any>) => Promise<void>)[] = []
-  const render = function render(templateName: string) {
-    const templateDir = path.resolve(templateRoot, templateName)
-    renderTemplate(templateDir, root, callbacks)
-  }
-
-  // Render base template
-  render('base')
-
-  // Add configs.
-  if (needsTypeScript) {
-    render('config/typescript')
-
-    // Render tsconfigs
-    render('tsconfig/base')
-    // The content of the root `tsconfig.json` is a bit complicated,
-    // So here we are programmatically generating it.
-    const rootTsConfig = {
-      // It doesn't target any specific files because they are all configured in the referenced ones.
-      files: [],
-      // All templates contain at least a `.node` and a `.app` tsconfig.
-      references: [
-        {
-          path: './tsconfig.node.json',
-        },
-        {
-          path: './tsconfig.app.json',
-        },
-      ],
-    }
-
-    fs.writeFileSync(
-      path.resolve(root, 'tsconfig.json'),
-      JSON.stringify(rootTsConfig, null, 2) + '\n',
-      'utf-8',
-    )
-  }
-
-  // Render ESLint config
-  if (needsEslint) {
-    render('linting/base')
-
-    if (needsTypeScript) {
-      render('linting/core/ts')
-    } else {
-      render('linting/core/js')
-    }
-
-    // These configs only disable rules, so they should be applied last.
-    if (needsPrettier) {
-      render('linting/prettier')
-    }
-  }
-
-  if (needsPrettier) {
-    render('formatting/prettier')
-  }
-
-  // Render code template.
-  const codeTemplate = needsTypeScript ? 'typescript-' : 'default'
-
-  render(`code/${codeTemplate}`)
-
-  render('entry/default')
-
-  // An external data store for callbacks to share data
-  const dataStore: Record<string, any> = {}
-
-  const indexHtmlPath = path.resolve(root, 'index.html')
-  dataStore[indexHtmlPath] = {
-    title: result.projectName,
-    entryExt: needsTypeScript ? 'tsx' : 'jsx',
-  }
-
-  // Process callbacks
-  for (const cb of callbacks) {
-    await cb(dataStore)
-  }
-
-  // EJS template rendering
-  preOrderDirectoryTraverse(
+  await scaffoldProject({
     root,
-    () => {},
-    (filepath) => {
-      if (filepath.endsWith('.ejs')) {
-        const template = fs.readFileSync(filepath, 'utf-8')
-        const dest = filepath.replace(/\.ejs$/, '')
-        const content = ejs.render(template, dataStore[dest])
-
-        fs.writeFileSync(dest, content)
-        fs.unlinkSync(filepath)
-      }
+    projectName: result.projectName!,
+    packageName: result.packageName!,
+    shouldOverwrite: !!result.shouldOverwrite,
+    features: {
+      typescript: needsTypeScript,
+      eslint: needsEslint,
+      prettier: needsPrettier,
     },
-  )
-
-  if (needsTypeScript) {
-    preOrderDirectoryTraverse(
-      root,
-      () => {},
-      (filepath) => {
-        if (filepath.endsWith('.js')) {
-          const tsFilePath = filepath.replace(/\.js$/, '.ts')
-          if (fs.existsSync(tsFilePath)) {
-            fs.unlinkSync(filepath)
-          } else {
-            fs.renameSync(filepath, tsFilePath)
-          }
-        } else if (filepath.endsWith('.jsx')) {
-          const tsxFilePath = filepath.replace(/\.jsx$/, '.tsx')
-          if (fs.existsSync(tsxFilePath)) {
-            fs.unlinkSync(filepath)
-          } else {
-            fs.renameSync(filepath, tsxFilePath)
-          }
-        } else if (path.basename(filepath) === 'jsconfig.json') {
-          fs.unlinkSync(filepath)
-        }
-      },
-    )
-
-    // Rename entry in `index.html`
-    const indexHtmlPath = path.resolve(root, 'index.html')
-    const indexHtmlContent = fs.readFileSync(indexHtmlPath, 'utf8')
-    fs.writeFileSync(indexHtmlPath, indexHtmlContent.replace('src/main.js', 'src/main.ts'))
-  } else {
-    // Remove all the remaining `.ts` and `.tsx` files
-    preOrderDirectoryTraverse(
-      root,
-      () => {},
-      (filepath) => {
-        if (filepath.endsWith('.ts') || filepath.endsWith('.tsx')) {
-          fs.unlinkSync(filepath)
-        }
-      },
-    )
-  }
+  })
 
   // Instructions:
   // Supported package managers: pnpm > yarn > bun > npm
