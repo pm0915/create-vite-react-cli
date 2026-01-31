@@ -1,5 +1,5 @@
 import { it, describe, expect } from 'vitest'
-import getCommand from '../src/utils/getCommand'
+import getCommand from '../src/utils/cli/getCommand'
 
 describe('getCommand', () => {
   it('should generate the correct command for yarn', () => {

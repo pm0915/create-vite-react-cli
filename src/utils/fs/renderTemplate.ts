@@ -2,8 +2,8 @@ import * as fs from 'node:fs'
 import * as path from 'node:path'
 import { pathToFileURL } from 'node:url'
 
-import deepMerge from './deepMerge'
-import sortDependencies from './sortDependencies'
+import deepMerge from '../helpers/deepMerge'
+import sortDependencies from '../helpers/sortDependencies'
 
 type Callback = (dataStore: Record<string, any>) => Promise<void>
 

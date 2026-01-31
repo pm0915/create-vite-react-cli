@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest'
 import * as fs from 'node:fs'
 import * as path from 'node:path'
-import renderTemplate from '../src/utils/renderTemplate'
+import renderTemplate from '../src/utils/fs/renderTemplate'
 
 const TEMP_DIR = path.resolve(__dirname, 'temp-render-test')
 const SRC_DIR = path.resolve(TEMP_DIR, 'src')

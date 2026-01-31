@@ -1,5 +1,5 @@
 import { it, describe, expect } from 'vitest'
-import sortDependencies from '../src/utils/sortDependencies'
+import sortDependencies from '../src/utils/helpers/sortDependencies'
 
 describe('sortDependencies', () => {
   it('should sort dependencies and dev dependencies', () => {
