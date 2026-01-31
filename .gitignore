@@ -15,7 +15,6 @@ lerna-debug.log*
 Thumbs.db
 
 # Editor
-.vscode/
 .idea/
 *.swp
 *.swo
