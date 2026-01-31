@@ -3,9 +3,9 @@ import { red, dim } from 'picocolors'
 import { language } from './locales/index'
 import { FEATURE_OPTIONS } from './types/index'
 import type { PromptResult } from './types/index'
-import { unwrapPrompt } from './utils/prompt'
-import { isValidPackageName, toValidPackageName } from './utils/package'
-import { canSkipEmptying } from './utils/directory'
+import { unwrapPrompt } from './utils/cli/prompt'
+import { isValidPackageName, toValidPackageName } from './utils/helpers/package'
+import { canSkipEmptying } from './utils/fs/directory'
 
 export async function collectOptions(
   initialTargetDir: string | undefined,
