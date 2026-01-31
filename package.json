@@ -1,6 +1,6 @@
 {
   "name": "create-vite-react-cli",
-  "version": "0.4.2",
+  "version": "0.4.3",
   "description": "🛠️ The recommended way to start a Vite-powered React project",
   "keywords": [
     "cli",
@@ -47,7 +47,8 @@
     "format": "oxfmt",
     "format:check": "oxfmt --check",
     "test": "vitest",
-    "release": "bumpp --execute 'pnpm exec changelogen --output CHANGELOG.md && git add CHANGELOG.md'",
+    "changelog": "changelogen --output CHANGELOG.md && git add CHANGELOG.md",
+    "release": "bumpp --execute \"pnpm run changelog\"",
     "prepublishOnly": "pnpm run build",
     "prepare": "husky"
   },

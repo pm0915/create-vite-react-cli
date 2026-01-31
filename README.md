@@ -45,3 +45,4 @@ create-vite-react-cli my-app
 - `--ts`, `--typescript`: Add TypeScript support.
 - `--eslint`: Add ESLint for code quality.
 - `--prettier`: Add Prettier for code formatting.
+<!-- test -->
