@@ -1,5 +1,7 @@
 # Changelog
 
+## [0.4.4](https://github.com/pm0915/create-vite-react-cli/compare/v0.4.3...v0.4.4) (2026-01-31)
+
 ## v0.4.3
 
 [compare changes](https://github.com/pm0915/create-vite-react-cli/compare/v0.4.2...v0.4.3)
