@@ -3,19 +3,17 @@ import * as path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { parseArgs } from 'node:util'
 import ejs from 'ejs'
-import { intro, text, confirm, multiselect, outro, cancel } from '@clack/prompts'
-import { red, green, bold, dim } from 'picocolors'
+import { intro, outro } from '@clack/prompts'
+import { green, bold, dim } from 'picocolors'
 import { language } from './locales/index'
 import { helpMessage } from './help/index'
-import { FEATURE_FLAGS, FEATURE_OPTIONS } from './types/index'
-import type { PromptResult } from './types/index'
-import { unwrapPrompt } from './utils/prompt'
+import { FEATURE_FLAGS } from './types/index'
 import { defaultBanner, gradientBanner } from './utils/banners'
 import getCommand from './utils/getCommand'
-import { isValidPackageName, toValidPackageName } from './utils/package'
-import { canSkipEmptying, emptyDir } from './utils/directory'
+import { emptyDir } from './utils/directory'
 import { preOrderDirectoryTraverse, dotGitDirectoryState } from './utils/directoryTraverse'
 import renderTemplate from './utils/renderTemplate'
+import { collectOptions } from './interactions'
 
 import cliPackageJson from '../package.json' with { type: 'json' }
 
@@ -51,74 +49,19 @@ async function createProject() {
   // if any of the feature flags is set, we would skip the feature prompts
   const isFeatureFlagsUsed = FEATURE_FLAGS.some((flag) => typeof argv[flag] === 'boolean')
 
-  let targetDir = positionals[0]
-  const defaultProjectName = targetDir || DEFAULT_PROJECT_NAME
+  const initialTargetDir = positionals[0]
+  const defaultProjectName = initialTargetDir || DEFAULT_PROJECT_NAME
 
   const forceOverwrite = argv.force
 
-  const result: PromptResult = {
-    projectName: defaultProjectName,
-    shouldOverwrite: forceOverwrite,
-    packageName: defaultProjectName,
-    features: [],
-  }
-
   intro(process.stdout.isTTY && process.stdout.getColorDepth() > 8 ? gradientBanner : defaultBanner)
 
-  if (!targetDir) {
-    const _result = await unwrapPrompt(
-      text({
-        message: language.projectName.message,
-        placeholder: defaultProjectName,
-        defaultValue: defaultProjectName,
-        validate: (value) =>
-          value.length === 0 || value.trim().length > 0
-            ? undefined
-            : language.projectName.invalidMessage,
-      }),
-    )
-    targetDir = result.projectName = result.packageName = _result.trim()
-  }
-
-  if (!canSkipEmptying(targetDir) && !forceOverwrite) {
-    result.shouldOverwrite = await unwrapPrompt(
-      confirm({
-        message: `${
-          targetDir === '.'
-            ? language.shouldOverwrite.dirForPrompts!.current
-            : `${language.shouldOverwrite.dirForPrompts!.target} "${targetDir}"`
-        } ${language.shouldOverwrite.message}`,
-        initialValue: false,
-      }),
-    )
-
-    if (!result.shouldOverwrite) {
-      cancel(red('✖') + ` ${language.errors.operationCancelled}`)
-      process.exit(0)
-    }
-  }
-
-  if (!isValidPackageName(targetDir)) {
-    result.packageName = await unwrapPrompt(
-      text({
-        message: language.packageName.message,
-        initialValue: toValidPackageName(targetDir),
-        validate: (value) =>
-          isValidPackageName(value) ? undefined : language.packageName.invalidMessage,
-      }),
-    )
-  }
-
-  if (!isFeatureFlagsUsed) {
-    result.features = await unwrapPrompt(
-      multiselect({
-        message: `${language.featureSelection.message} ${dim(language.featureSelection.hint)}`,
-        // @ts-expect-error @clack/prompt's type doesn't support readonly array yet
-        options: FEATURE_OPTIONS,
-        required: false,
-      }),
-    )
-  }
+  const { targetDir, result } = await collectOptions(
+    initialTargetDir,
+    defaultProjectName,
+    !!forceOverwrite,
+    isFeatureFlagsUsed,
+  )
 
   const { features = [] } = result
 
