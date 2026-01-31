@@ -1,9 +1,9 @@
 import * as fs from 'node:fs'
 import * as path from 'node:path'
-import { fileURLToPath } from 'node:url'
 import ejs from 'ejs'
 
 import { language } from '../locales'
+import { TEMPLATE_ROOT } from '../constants'
 import { emptyDir } from '../utils/fs/directory'
 import { preOrderDirectoryTraverse } from '../utils/fs/directoryTraverse'
 import renderTemplate from '../utils/fs/renderTemplate'
@@ -39,10 +39,9 @@ ${language.infos.scaffolding} ${root}...`)
   const pkg = { name: packageName, version: '0.0.0' }
   fs.writeFileSync(path.resolve(root, 'package.json'), JSON.stringify(pkg, null, 2))
 
-  const templateRoot = fileURLToPath(new URL('../../templates', import.meta.url))
   const callbacks: ((dataStore: Record<string, any>) => Promise<void>)[] = []
   const render = function render(templateName: string) {
-    const templateDir = path.resolve(templateRoot, templateName)
+    const templateDir = path.resolve(TEMPLATE_ROOT, templateName)
     renderTemplate(templateDir, root, callbacks)
   }
 
