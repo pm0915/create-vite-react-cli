@@ -49,7 +49,10 @@
     "test": "vitest",
     "prepublishOnly": "pnpm run build",
     "prepare": "husky",
-    "release": "release-it"
+    "release": "release-it",
+    "release:patch": "release-it patch",
+    "release:minor": "release-it minor",
+    "release:major": "release-it major"
   },
   "devDependencies": {
     "@clack/prompts": "^0.11.0",

@@ -16,19 +16,28 @@ jobs:
     permissions:
       contents: write
       id-token: write
+
     steps:
       - uses: actions/checkout@v4
+
       - uses: pnpm/action-setup@v4
+
       - uses: actions/setup-node@v4
         with:
           node-version: 'lts/*'
           registry-url: 'https://registry.npmjs.org'
-      # Ensure npm 11.5.1 or later is installed
-      - name: Update npm
-        run: npm install -g npm@latest
+
       - run: pnpm install
       - run: pnpm publish --no-git-checks
+
+      - name: Extract changelog for current version
+        id: changelog
+        run: |
+          VERSION="${GITHUB_REF_NAME}"
+          awk "/^## ${VERSION}/{flag=1; next} /^## v/{flag=0} flag" CHANGELOG.md > RELEASE_NOTES.md
+          test -s RELEASE_NOTES.md || (echo "❌ No changelog entry found for ${VERSION}" && exit 1)
+
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
-          generate_release_notes: true
+          body_path: RELEASE_NOTES.md

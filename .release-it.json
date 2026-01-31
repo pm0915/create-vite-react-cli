@@ -2,14 +2,16 @@
   "$schema": "https://unpkg.com/release-it/schema/release-it.json",
   "git": {
     "commitMessage": "chore: release v${version}",
-    "tagName": "v${version}"
+    "tagName": "v${version}",
+    "push": true,
+    "requireCleanWorkingDir": true,
+    "requireBranch": "main"
   },
   "github": {
-    "release": true
+    "release": false
   },
   "npm": {
-    "publish": true,
-    "skipChecks": true
+    "publish": false
   },
   "plugins": {
     "release-it-pnpm": {},
@@ -17,5 +19,9 @@
       "preset": "angular",
       "infile": "CHANGELOG.md"
     }
+  },
+  "hooks": {
+    "before:init": ["pnpm typecheck", "pnpm lint", "pnpm test"],
+    "after:bump": "pnpm build"
   }
 }
