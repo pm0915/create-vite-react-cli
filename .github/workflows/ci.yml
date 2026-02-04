@@ -1,0 +1,46 @@
+name: 'ci'
+
+on:
+  push:
+    branches:
+      - '**'
+      - '!renovate/**'
+    paths-ignore:
+      - README.md
+      - CONTRIBUTING.md
+  pull_request:
+    branches:
+      - '**'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: Build the package
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'pnpm'
+
+      - run: pnpm install
+
+      - run: pnpm build
+      - run: pnpm test
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: build-output
+          path: |
+            index.js
+            dist
+            locales
+            templates
+          retention-days: 3

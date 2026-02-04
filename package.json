@@ -1,0 +1,84 @@
+{
+  "name": "create-vite-react-cli",
+  "version": "0.4.10",
+  "description": "🛠️ The recommended way to start a Vite-powered React project",
+  "keywords": [
+    "cli",
+    "react",
+    "scaffold",
+    "template",
+    "vite"
+  ],
+  "homepage": "https://github.com/pm0915/create-vite-react-cli#readme",
+  "bugs": {
+    "url": "https://github.com/pm0915/create-vite-react-cli/issues"
+  },
+  "license": "MIT",
+  "author": "Miles Pan",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pm0915/create-vite-react-cli.git"
+  },
+  "bin": {
+    "create-vite-react-cli": "index.js"
+  },
+  "files": [
+    "dist",
+    "index.js",
+    "locales",
+    "templates",
+    "!templates/**/node_modules/.bin/*"
+  ],
+  "type": "module",
+  "exports": {
+    ".": "./dist/index.mjs",
+    "./package.json": "./package.json"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "scripts": {
+    "build": "tsdown",
+    "dev": "tsdown --watch",
+    "typecheck": "tsc --noEmit",
+    "lint": "oxlint",
+    "lint:fix": "oxlint --fix",
+    "format": "oxfmt",
+    "format:check": "oxfmt --check",
+    "test": "vitest",
+    "prepublishOnly": "pnpm run build",
+    "prepare": "husky",
+    "release:patch": "standard-version --release-as patch",
+    "release:minor": "standard-version --release-as minor",
+    "release:major": "standard-version --release-as major"
+  },
+  "devDependencies": {
+    "@clack/prompts": "^0.11.0",
+    "@types/ejs": "^3.1.5",
+    "@types/node": "^25.0.3",
+    "ejs": "^3.1.10",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.2.7",
+    "oxfmt": "^0.24.0",
+    "oxlint": "^1.39.0",
+    "picocolors": "^1.1.1",
+    "standard-version": "^9.5.0",
+    "tsdown": "^0.19.0",
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.16"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,mjs,cjs}": [
+      "oxlint --fix",
+      "oxfmt"
+    ],
+    "*.{json,md,css,scss}": [
+      "oxfmt"
+    ]
+  },
+  "engines": {
+    "node": "^20.19.0 || >=22.12.0"
+  },
+  "packageManager": "pnpm@10.28.2"
+}

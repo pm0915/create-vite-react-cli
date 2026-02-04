@@ -1,0 +1,42 @@
+{
+  "projectName": {
+    "message": "请输入项目名称：",
+    "invalidMessage": "不能为空"
+  },
+  "shouldOverwrite": {
+    "dirForPrompts": {
+      "current": "当前目录",
+      "target": "目标文件夹"
+    },
+    "message": "非空，是否覆盖？"
+  },
+  "packageName": {
+    "message": "请输入包名称：",
+    "invalidMessage": "无效的 package.json 名称"
+  },
+  "featureSelection": {
+    "message": "请选择要包含的功能：",
+    "hint": "(↑/↓ 切换，空格选择，a 全选，回车确认)"
+  },
+  "needsTypeScript": {
+    "message": "TypeScript"
+  },
+  "needsEslint": {
+    "message": "ESLint（错误预防）"
+  },
+  "needsPrettier": {
+    "message": "Prettier（代码格式化）"
+  },
+  "errors": {
+    "operationCancelled": "操作取消"
+  },
+  "defaultToggleOptions": {
+    "active": "是",
+    "inactive": "否"
+  },
+  "infos": {
+    "scaffolding": "正在初始化项目",
+    "done": "项目初始化完成，可执行以下命令：",
+    "optionalGitCommand": "可选：使用以下命令在项目目录中初始化 Git："
+  }
+}
