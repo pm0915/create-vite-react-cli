@@ -1,34 +1,19 @@
 import * as path from 'node:path'
-import { parseArgs } from 'node:util'
 import { intro, outro } from '@clack/prompts'
-import { green, bold, dim } from 'picocolors'
-import { language } from './locales'
 import { helpMessage } from './cli/help'
-import { DEFAULT_PROJECT_NAME, FEATURE_FLAGS } from './constants'
+import { DEFAULT_PROJECT_NAME } from './constants'
 import { defaultBanner, gradientBanner } from './utils/cli/banners'
-import getCommand from './utils/cli/getCommand'
-import { dotGitDirectoryState } from './utils/fs/directoryTraverse'
 import { collectOptions } from './cli/prompts'
 import { scaffoldProject } from './core/scaffold'
+import { areFeatureFlagsUsed, parseCliArgs } from './cli/args'
+import { detectPackageManager } from './utils/cli/packageManager'
+import { buildOutroMessage } from './cli/outro'
 
 import cliPackageJson from '../package.json' with { type: 'json' }
 
-async function createProject() {
+async function run() {
   const cwd = process.cwd()
-  const args = process.argv.slice(2)
-
-  const flags = [...FEATURE_FLAGS, 'force', 'help', 'version'] as const
-  type CLIOptions = {
-    [key in (typeof flags)[number]]: { readonly type: 'boolean' }
-  }
-  const options = Object.fromEntries(flags.map((key) => [key, { type: 'boolean' }])) as CLIOptions
-
-  const { values: argv, positionals } = parseArgs({
-    args,
-    options,
-    strict: true,
-    allowPositionals: true,
-  })
+  const { values: argv, positionals } = parseCliArgs(process.argv.slice(2))
 
   if (argv.help) {
     console.log(helpMessage)
@@ -41,7 +26,7 @@ async function createProject() {
   }
 
   // if any of the feature flags is set, we would skip the feature prompts
-  const isFeatureFlagsUsed = FEATURE_FLAGS.some((flag) => typeof argv[flag] === 'boolean')
+  const isFeatureFlagsUsed = areFeatureFlagsUsed(argv)
 
   const initialTargetDir = positionals[0]
   const defaultProjectName = initialTargetDir || DEFAULT_PROJECT_NAME
@@ -57,7 +42,7 @@ async function createProject() {
     isFeatureFlagsUsed,
   )
 
-  const { features = [] } = result
+  const { features } = result
 
   const needsTypeScript = !!(argv.ts || argv.typescript || features.includes('typescript'))
   const needsEslint = !!(argv.eslint || argv['eslint-with-prettier'] || features.includes('eslint'))
@@ -71,9 +56,9 @@ async function createProject() {
 
   await scaffoldProject({
     root,
-    projectName: result.projectName!,
-    packageName: result.packageName!,
-    shouldOverwrite: !!result.shouldOverwrite,
+    projectName: result.projectName,
+    packageName: result.packageName,
+    shouldOverwrite: result.shouldOverwrite,
     features: {
       typescript: needsTypeScript,
       eslint: needsEslint,
@@ -83,42 +68,21 @@ async function createProject() {
 
   // Instructions:
   // Supported package managers: pnpm > yarn > bun > npm
-  const userAgent = process.env.npm_config_user_agent ?? ''
-  const packageManager = /pnpm/.test(userAgent)
-    ? 'pnpm'
-    : /yarn/.test(userAgent)
-      ? 'yarn'
-      : /bun/.test(userAgent)
-        ? 'bun'
-        : 'npm'
+  const packageManager = detectPackageManager()
 
   // TODO README generation
-
-  let outroMessage = `${language.infos.done}\n\n`
-  if (root !== cwd) {
-    const cdProjectName = path.relative(cwd, root)
-    outroMessage += `   ${bold(green(`cd ${cdProjectName.includes(' ') ? `"${cdProjectName}"` : cdProjectName}`))}\n`
-  }
-  outroMessage += `   ${bold(green(getCommand(packageManager, 'install')))}\n`
-  if (needsEslint) {
-    outroMessage += `   ${bold(green(getCommand(packageManager, 'lint')))}\n`
-  }
-  if (needsPrettier) {
-    outroMessage += `   ${bold(green(getCommand(packageManager, 'format')))}\n`
-  }
-  outroMessage += `   ${bold(green(getCommand(packageManager, 'dev')))}\n`
-
-  if (!dotGitDirectoryState.hasDotGitDirectory) {
-    outroMessage += `
-${dim('|')} ${language.infos.optionalGitCommand}
-
-   ${bold(green('git init && git add -A && git commit -m "initial commit"'))}`
-  }
-
-  outro(outroMessage)
+  outro(
+    buildOutroMessage({
+      cwd,
+      root,
+      packageManager,
+      needsEslint,
+      needsPrettier,
+    }),
+  )
 }
 
-createProject().catch((error) => {
+run().catch((error) => {
   console.error(error)
   process.exit(1)
 })
