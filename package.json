@@ -44,8 +44,8 @@
     "typecheck": "tsc --noEmit",
     "lint": "oxlint",
     "lint:fix": "oxlint --fix",
-    "format": "oxfmt",
-    "format:check": "oxfmt --check",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
     "test": "vitest",
     "prepublishOnly": "pnpm run build",
     "prepare": "husky",
@@ -60,9 +60,9 @@
     "ejs": "^3.1.10",
     "husky": "^9.1.7",
     "lint-staged": "^16.2.7",
-    "oxfmt": "^0.24.0",
     "oxlint": "^1.39.0",
     "picocolors": "^1.1.1",
+    "prettier": "^3.8.1",
     "standard-version": "^9.5.0",
     "tsdown": "^0.19.0",
     "typescript": "^5.9.3",
@@ -71,10 +71,10 @@
   "lint-staged": {
     "*.{js,jsx,ts,tsx,mjs,cjs}": [
       "oxlint --fix",
-      "oxfmt"
+      "prettier --write"
     ],
-    "*.{json,md,css,scss}": [
-      "oxfmt"
+    "*.{json,md,css,scss,yml,yaml}": [
+      "prettier --write"
     ]
   },
   "engines": {

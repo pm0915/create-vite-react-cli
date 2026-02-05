@@ -1,11 +1,11 @@
-import { text, confirm, multiselect, cancel } from '@clack/prompts'
-import { red, dim } from 'picocolors'
-import { language } from '../locales'
-import { FEATURE_OPTIONS } from '../constants'
-import type { PromptResult } from '../types/index'
-import { unwrapPrompt } from '../utils/cli/prompt'
-import { isValidPackageName, toValidPackageName } from '../utils/helpers/package'
-import { canSkipEmptying } from '../utils/fs/directory'
+import { text, confirm, multiselect, cancel } from '@clack/prompts';
+import { red, dim } from 'picocolors';
+import { language } from '../locales';
+import { FEATURE_OPTIONS } from '../constants';
+import type { PromptResult } from '../types/index';
+import { unwrapPrompt } from '../utils/cli/prompt';
+import { isValidPackageName, toValidPackageName } from '../utils/helpers/package';
+import { canSkipEmptying } from '../utils/fs/directory';
 
 export async function collectOptions(
   initialTargetDir: string | undefined,
@@ -13,14 +13,14 @@ export async function collectOptions(
   forceOverwrite: boolean,
   isFeatureFlagsUsed: boolean,
 ): Promise<{ targetDir: string; result: PromptResult }> {
-  let targetDir = initialTargetDir || defaultProjectName
+  let targetDir = initialTargetDir || defaultProjectName;
 
   const result: PromptResult = {
     projectName: initialTargetDir || defaultProjectName,
     shouldOverwrite: forceOverwrite,
     packageName: initialTargetDir || defaultProjectName,
     features: [],
-  }
+  };
 
   if (!initialTargetDir) {
     const _result = await unwrapPrompt(
@@ -33,8 +33,8 @@ export async function collectOptions(
             ? undefined
             : language.projectName.invalidMessage,
       }),
-    )
-    targetDir = result.projectName = result.packageName = _result.trim()
+    );
+    targetDir = result.projectName = result.packageName = _result.trim();
   }
 
   if (!canSkipEmptying(targetDir) && !forceOverwrite) {
@@ -47,11 +47,11 @@ export async function collectOptions(
         } ${language.shouldOverwrite.message}`,
         initialValue: false,
       }),
-    )
+    );
 
     if (!result.shouldOverwrite) {
-      cancel(red('✖') + ` ${language.errors.operationCancelled}`)
-      process.exit(0)
+      cancel(red('✖') + ` ${language.errors.operationCancelled}`);
+      process.exit(0);
     }
   }
 
@@ -63,7 +63,7 @@ export async function collectOptions(
         validate: (value) =>
           isValidPackageName(value) ? undefined : language.packageName.invalidMessage,
       }),
-    )
+    );
   }
 
   if (!isFeatureFlagsUsed) {
@@ -74,8 +74,8 @@ export async function collectOptions(
         options: FEATURE_OPTIONS,
         required: false,
       }),
-    )
+    );
   }
 
-  return { targetDir, result }
+  return { targetDir, result };
 }

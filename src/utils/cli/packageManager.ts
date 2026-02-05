@@ -1,16 +1,16 @@
-export type PackageManager = 'pnpm' | 'yarn' | 'bun' | 'npm'
+export type PackageManager = 'pnpm' | 'yarn' | 'bun' | 'npm';
 
 export function detectPackageManager(
   userAgent: string = process.env.npm_config_user_agent ?? '',
 ): PackageManager {
   if (/pnpm/.test(userAgent)) {
-    return 'pnpm'
+    return 'pnpm';
   }
   if (/yarn/.test(userAgent)) {
-    return 'yarn'
+    return 'yarn';
   }
   if (/bun/.test(userAgent)) {
-    return 'bun'
+    return 'bun';
   }
-  return 'npm'
+  return 'npm';
 }

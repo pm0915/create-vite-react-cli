@@ -1,9 +1,9 @@
-import { fileURLToPath } from 'node:url'
-import { language } from './locales'
+import { fileURLToPath } from 'node:url';
+import { language } from './locales';
 
-export const DEFAULT_PROJECT_NAME = 'my-vite-react-app'
+export const DEFAULT_PROJECT_NAME = 'my-vite-react-app';
 
-export const TEMPLATE_ROOT = fileURLToPath(new URL('../templates', import.meta.url))
+export const TEMPLATE_ROOT = fileURLToPath(new URL('../templates', import.meta.url));
 
 export const FEATURE_FLAGS = [
   'default',
@@ -12,7 +12,7 @@ export const FEATURE_FLAGS = [
   'eslint',
   'prettier',
   'eslint-with-prettier',
-] as const
+] as const;
 
 export const FEATURE_OPTIONS = [
   {
@@ -27,4 +27,4 @@ export const FEATURE_OPTIONS = [
     value: 'prettier',
     label: language.needsPrettier.message,
   },
-] as const
+] as const;

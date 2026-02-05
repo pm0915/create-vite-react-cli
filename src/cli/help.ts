@@ -1,4 +1,4 @@
-import { cyan } from 'picocolors'
+import { cyan } from 'picocolors';
 
 export const helpMessage = `\
 Usage: create-vite-react-cli [FEATURE_FLAGS...] [OPTIONS...] [DIRECTORY]
@@ -25,4 +25,4 @@ Available feature flags:
     Add Prettier for code formatting in addition to ESLint.
   --prettier
     Add Prettier for code formatting.
-`
+`;

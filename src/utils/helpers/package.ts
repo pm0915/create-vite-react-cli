@@ -1,5 +1,5 @@
 export function isValidPackageName(projectName: string) {
-  return /^(?:@[a-z0-9-*~][a-z0-9-*._~]*\/)?[a-z0-9-~][a-z0-9-._~]*$/.test(projectName)
+  return /^(?:@[a-z0-9-*~][a-z0-9-*._~]*\/)?[a-z0-9-~][a-z0-9-._~]*$/.test(projectName);
 }
 
 export function toValidPackageName(projectName: string) {
@@ -8,5 +8,5 @@ export function toValidPackageName(projectName: string) {
     .toLowerCase()
     .replace(/\s+/g, '-')
     .replace(/^[._]/, '')
-    .replace(/[^a-z0-9-~]+/g, '-')
+    .replace(/[^a-z0-9-~]+/g, '-');
 }

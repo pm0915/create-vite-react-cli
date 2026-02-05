@@ -1,5 +1,5 @@
-import * as fs from 'node:fs'
-import * as path from 'node:path'
+import * as fs from 'node:fs';
+import * as path from 'node:path';
 
 export function preOrderDirectoryTraverse(
   dir: string,
@@ -8,24 +8,24 @@ export function preOrderDirectoryTraverse(
 ): void {
   for (const filename of fs.readdirSync(dir)) {
     if (filename === '.git') {
-      continue
+      continue;
     }
-    const fullpath = path.resolve(dir, filename)
+    const fullpath = path.resolve(dir, filename);
     if (fs.lstatSync(fullpath).isDirectory()) {
-      dirCallback(fullpath)
+      dirCallback(fullpath);
       // in case the dirCallback removes the directory entirely
       if (fs.existsSync(fullpath)) {
-        preOrderDirectoryTraverse(fullpath, dirCallback, fileCallback)
+        preOrderDirectoryTraverse(fullpath, dirCallback, fileCallback);
       }
-      continue
+      continue;
     }
-    fileCallback(fullpath)
+    fileCallback(fullpath);
   }
 }
 
 export const dotGitDirectoryState = {
   hasDotGitDirectory: false,
-}
+};
 
 export function postOrderDirectoryTraverse(
   dir: string,
@@ -34,15 +34,15 @@ export function postOrderDirectoryTraverse(
 ): void {
   for (const filename of fs.readdirSync(dir)) {
     if (filename === '.git') {
-      dotGitDirectoryState.hasDotGitDirectory = true
-      continue
+      dotGitDirectoryState.hasDotGitDirectory = true;
+      continue;
     }
-    const fullpath = path.resolve(dir, filename)
+    const fullpath = path.resolve(dir, filename);
     if (fs.lstatSync(fullpath).isDirectory()) {
-      postOrderDirectoryTraverse(fullpath, dirCallback, fileCallback)
-      dirCallback(fullpath)
-      continue
+      postOrderDirectoryTraverse(fullpath, dirCallback, fileCallback);
+      dirCallback(fullpath);
+      continue;
     }
-    fileCallback(fullpath)
+    fileCallback(fullpath);
   }
 }

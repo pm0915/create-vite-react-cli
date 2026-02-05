@@ -1,5 +1,5 @@
-import { it, describe, expect } from 'vitest'
-import sortDependencies from '../src/utils/helpers/sortDependencies'
+import { it, describe, expect } from 'vitest';
+import sortDependencies from '../src/utils/helpers/sortDependencies';
 
 describe('sortDependencies', () => {
   it('should sort dependencies and dev dependencies', () => {
@@ -25,7 +25,7 @@ describe('sortDependencies', () => {
         '@types/react': '^19.2.5',
         '@eslint/js': '^9.39.1',
       },
-    }
+    };
 
     expect(sortDependencies(packageJson)).toStrictEqual({
       dependencies: {
@@ -49,6 +49,6 @@ describe('sortDependencies', () => {
         'typescript-eslint': '^8.46.4',
         vite: '^7.2.4',
       },
-    })
-  })
-})
+    });
+  });
+});
