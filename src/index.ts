@@ -42,7 +42,7 @@ async function run() {
     isFeatureFlagsUsed,
   )
 
-  const { features = [] } = result
+  const { features } = result
 
   const needsTypeScript = !!(argv.ts || argv.typescript || features.includes('typescript'))
   const needsEslint = !!(argv.eslint || argv['eslint-with-prettier'] || features.includes('eslint'))
@@ -56,9 +56,9 @@ async function run() {
 
   await scaffoldProject({
     root,
-    projectName: result.projectName!,
-    packageName: result.packageName!,
-    shouldOverwrite: !!result.shouldOverwrite,
+    projectName: result.projectName,
+    packageName: result.packageName,
+    shouldOverwrite: result.shouldOverwrite,
     features: {
       typescript: needsTypeScript,
       eslint: needsEslint,
