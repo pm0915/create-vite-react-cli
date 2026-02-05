@@ -5,7 +5,7 @@ import { pathToFileURL } from 'node:url';
 import deepMerge from '../helpers/deepMerge';
 import sortDependencies from '../helpers/sortDependencies';
 
-type Callback = (dataStore: Record<string, any>) => Promise<void>;
+type Callback = (dataStore: Record<string, unknown>) => Promise<void>;
 
 /**
  * Renders a template folder/file to the file system,

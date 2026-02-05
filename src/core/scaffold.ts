@@ -39,7 +39,7 @@ ${language.infos.scaffolding} ${root}...`);
   const pkg = { name: packageName, version: '0.0.0' };
   fs.writeFileSync(path.resolve(root, 'package.json'), JSON.stringify(pkg, null, 2));
 
-  const callbacks: ((dataStore: Record<string, any>) => Promise<void>)[] = [];
+  const callbacks: ((dataStore: Record<string, unknown>) => Promise<void>)[] = [];
   const render = function render(templateName: string) {
     const templateDir = path.resolve(TEMPLATE_ROOT, templateName);
     renderTemplate(templateDir, root, callbacks);
@@ -105,7 +105,7 @@ ${language.infos.scaffolding} ${root}...`);
   render('entry/default');
 
   // An external data store for callbacks to share data
-  const dataStore: Record<string, any> = {};
+  const dataStore: Record<string, unknown> = {};
 
   const indexHtmlPath = path.resolve(root, 'index.html');
   dataStore[indexHtmlPath] = {
@@ -126,7 +126,7 @@ ${language.infos.scaffolding} ${root}...`);
       if (filepath.endsWith('.ejs')) {
         const template = fs.readFileSync(filepath, 'utf-8');
         const dest = filepath.replace(/\.ejs$/, '');
-        const content = ejs.render(template, dataStore[dest]);
+        const content = ejs.render(template, dataStore[dest] as ejs.Data);
 
         fs.writeFileSync(dest, content);
         fs.unlinkSync(filepath);

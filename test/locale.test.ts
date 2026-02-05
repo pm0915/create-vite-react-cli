@@ -3,10 +3,13 @@ import { resolve } from 'node:path';
 import { readdirSync } from 'node:fs';
 import en from '../locales/en-US.json';
 
-function getKeys(obj: any, path = '', result: string[] = []) {
-  for (let key in obj) {
-    if (typeof obj[key] === 'object') {
-      getKeys(obj[key], path ? `${path}.${key}` : key, result);
+type NestedObject = { [key: string]: string | NestedObject };
+
+function getKeys(obj: NestedObject, path = '', result: string[] = []) {
+  for (const key in obj) {
+    const value = obj[key];
+    if (typeof value === 'object') {
+      getKeys(value, path ? `${path}.${key}` : key, result);
     } else {
       result.push(path ? `${path}.${key}` : key);
     }
@@ -21,8 +24,9 @@ const defaultKeys = getKeys(en);
 
 describe('locale files should include all keys', () => {
   localesOtherThanEnglish.forEach((locale) => {
-    it(`for ${locale}`, () => {
-      expect(getKeys(require(`../locales/${locale}`))).toEqual(defaultKeys);
+    it(`for ${locale}`, async () => {
+      const localeData = (await import(`../locales/${locale}`)) as { default: NestedObject };
+      expect(getKeys(localeData.default)).toEqual(defaultKeys);
     });
   });
 });
