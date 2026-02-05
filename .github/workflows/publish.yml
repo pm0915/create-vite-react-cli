@@ -3,14 +3,13 @@ name: Publish
 on:
   push:
     tags:
-      - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
+      - 'v*'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
 
 jobs:
-  release:
-    # Use Publish environment for deployment protection
+  publish:
     environment: Publish
     runs-on: ubuntu-latest
     permissions:
@@ -24,19 +23,28 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 'lts/*'
-          registry-url: 'https://registry.npmjs.org'
+          node-version: 22
+          registry-url: https://registry.npmjs.org
+          cache: pnpm
 
-      - run: pnpm install
+      - run: pnpm install --frozen-lockfile
+
+      - run: pnpm run build
+
       - run: pnpm publish --no-git-checks
 
       - name: Extract changelog for current version
         id: changelog
         run: |
-          awk "/^## ${GITHUB_REF_NAME}/{flag=1; next} /^## v/{flag=0} flag" CHANGELOG.md > RELEASE_NOTES.md
-          test -s RELEASE_NOTES.md || (echo "❌ No changelog entry found for ${GITHUB_REF_NAME}" && exit 1)
+          VERSION=${GITHUB_REF_NAME#v}
+          awk "/^## \[?${VERSION}\]?/{flag=1; next} /^## /{flag=0} flag" CHANGELOG.md > RELEASE_NOTES.md
+          if [ ! -s RELEASE_NOTES.md ]; then
+            echo "No changelog entry found for ${GITHUB_REF_NAME}, using default message"
+            echo "Release ${GITHUB_REF_NAME}" > RELEASE_NOTES.md
+          fi
 
-      - name: Create Release
+      - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           body_path: RELEASE_NOTES.md
+          generate_release_notes: true
